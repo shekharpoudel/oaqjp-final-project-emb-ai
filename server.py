@@ -1,14 +1,19 @@
+""" Web server for Emotion Detector  """
+
 from flask import Flask, render_template, request
 from EmotionDetection.emotion_detection import emotion_detector
 
 app = Flask("Emotion Detection")
+
 @app.route("/")
+
 def get_home_page():
-     return render_template('index.html') #load index page with template renderer
+    """ root directory route to remplete renderer for index page """
+    return render_template('index.html')
 
 @app.route("/emotionDetector") #this is where the javascript is calling
 def sent_analyzer():
-    # Retrieve the text for emotion from the request arguments
+    """ Retrieve the text for emotion from the request arguments  """
     text_to_analyze = request.args.get('textToAnalyze')
     emotion_dict = emotion_detector(text_to_analyze)
     if emotion_dict['dominant_emotion'] is None:
@@ -24,4 +29,5 @@ def sent_analyzer():
         f"The dominant emotion is <b>{emotion_dict['dominant_emotion']}</b>.")
     return html_output # Return a formatted string
 
+#run web on port 5000 and kept debug=True for timebeing
 app.run(port=5000, debug=True)
