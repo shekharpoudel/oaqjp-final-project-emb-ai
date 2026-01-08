@@ -11,7 +11,10 @@ def sent_analyzer():
     # Retrieve the text for emotion from the request arguments
     text_to_analyze = request.args.get('textToAnalyze')
     emotion_dict = emotion_detector(text_to_analyze)
-    html_output = (
+    if emotion_dict['dominant_emotion'] is None:
+        html_output = '<b>Invalid text! Please try again!</br>'
+    else:
+        html_output = (
         f"For the given statement, the system response is "
         f"'anger': {emotion_dict['anger']}, "
         f"'disgust': {emotion_dict['disgust']}, "
